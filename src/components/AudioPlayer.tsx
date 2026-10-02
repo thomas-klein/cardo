@@ -19,7 +19,8 @@ import { convertFileSrc } from '@tauri-apps/api/core'
 import round from 'lodash/round'
 import { RangeInput } from './Inputs'
 import { PlayerContext, PlayerPositionContext, useHistory, useQueue, useDownloads, useMisc, usePlayer, usePlayerPosition } from '../ContextProviders'
-import { EpisodeCover, proxyUrl } from './Cover'
+import { EpisodeCover } from './Cover'
+import { proxyUrl } from '../utils/imageProxy'
 import * as globalShortcut from "@tauri-apps/plugin-global-shortcut"
 
 function PositionProvider({ audioRef, children }: { audioRef: RefObject<HTMLAudioElement | null>; children: ReactNode }) {

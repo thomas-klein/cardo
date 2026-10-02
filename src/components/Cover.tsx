@@ -2,13 +2,7 @@ import { useState } from 'react'
 import { EpisodeData, PodcastData } from '..'
 import { getColor, usePodcastSettings, useSettings } from '../engines/Settings'
 import colors from 'tailwindcss/colors'
-
-export function proxyUrl(url: string | undefined): string | undefined {
-  if (!url) return url
-  if (url.startsWith('https://')) return url.replace('https://', 'imgproxy://')
-  if (url.startsWith('http://')) return url.replace('http://', 'imgproxy://')
-  return url
-}
+import { proxyUrl } from '../utils/imageProxy'
 
 interface PodcastCoverProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   podcast: Partial<PodcastData>

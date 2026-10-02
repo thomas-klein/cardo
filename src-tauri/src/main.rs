@@ -1,5 +1,6 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod image_proxy;
 use aes_gcm::aead::{generic_array::GenericArray, Aead, KeyInit, OsRng};
 use aes_gcm::{Aes256Gcm, Nonce};
 use base64::{engine::general_purpose, Engine as _};
@@ -231,17 +232,25 @@ fn main() {
     tauri::Builder::default()
         .register_asynchronous_uri_scheme_protocol("imgproxy", |_ctx, request, responder| {
             tauri::async_runtime::spawn(async move {
-                // URL format: imgproxy://host/path
-                let uri = request.uri().to_string();
-                let https_url = uri.replacen("imgproxy://", "https://", 1);
+                let image_url = match image_proxy::source_url(request.uri().path()) {
+                    Ok(url) => url,
+                    Err(error) => {
+                        log::warn!("Invalid image proxy URL: {error}");
+                        responder.respond(
+                            TauriResponse::builder().status(400).body(Vec::new()).unwrap(),
+                        );
+                        return;
+                    }
+                };
 
                 let result = reqwest::Client::builder()
                     .user_agent("")
                     .build()
                     .unwrap()
-                    .get(&https_url)
+                    .get(image_url)
                     .send()
-                    .await;
+                    .await
+                    .and_then(reqwest::Response::error_for_status);
 
                 match result {
                     Ok(response) => {
@@ -270,7 +279,8 @@ fn main() {
                             }
                         }
                     }
-                    Err(_) => {
+                    Err(error) => {
+                        log::warn!("Image proxy download failed: {}", error.without_url());
                         responder.respond(
                             TauriResponse::builder()
                                 .status(502)

@@ -19,6 +19,7 @@ aes-gcm = "0.10"
 base64 = "0.22"
 rand = "0.8.5"
 reqwest = { version = "0.12", features = ["json"] }
+percent-encoding = "2"
 tokio = { version = "1", features = ["full"] }
 tauri-plugin-process = "2.3.1"
 tauri-plugin-os = "2.3.2"
