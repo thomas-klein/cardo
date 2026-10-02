@@ -72,12 +72,10 @@ function ModalBanner({
 
   return (
     <>
-      {showDialog && (
-        <div className="fixed inset-0 z-30" onClick={() => setShowDialog(false)} />
-      )}
+      {showDialog && <div className="fixed inset-0 z-30" onClick={() => setShowDialog(false)} />}
       <form
         ref={formRef}
-        className={`fixed left-1/2 top-1/2 z-40 min-w-64 max-w-[70%] -translate-x-1/2 -translate-y-1/2 select-none flex-col justify-between gap-1 rounded-md border-2 border-primary-6 bg-primary-9 px-3 py-1.5 shadow-md shadow-primary-8 transition-all ${showDialog ? 'flex' : 'hidden'} `}
+        className={`border-primary-6 bg-primary-9 shadow-primary-8 fixed top-1/2 left-1/2 z-40 max-w-[70%] min-w-64 -translate-x-1/2 -translate-y-1/2 flex-col justify-between gap-1 rounded-md border-2 px-3 py-1.5 shadow-md transition-all select-none ${showDialog ? 'flex' : 'hidden'} `}
         onKeyDown={handleKeyDown}
         onSubmit={async (e) => {
           e.preventDefault()
@@ -89,10 +87,13 @@ function ModalBanner({
       >
         {children}
         <div className="mt-1 flex justify-center gap-4">
-          <button className="min-w-20 rounded-md bg-green-600 px-2 py-1 uppercase">{labels[0]}</button>
+          <button type="submit" className="dialog-button dialog-button-confirm">
+            {labels[0]}
+          </button>
 
           <button
-            className="rounded-md bg-red-600 px-2 py-1 uppercase"
+            type="button"
+            className="dialog-button dialog-button-cancel"
             onClick={() => {
               setShowDialog(false)
             }}
