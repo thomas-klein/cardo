@@ -130,11 +130,12 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
   const play = async (episode?: EpisodeData | undefined) => {
     if (audioRef.current == null) return
 
-    if (episode !== undefined) {
-      load(episode)
+    // Resuming the loaded episode must keep the live audio position, including seeks while paused.
+    if (episode !== undefined && episode.src !== playing?.src) {
+      await load(episode)
     }
 
-    audioRef.current.play()
+    await audioRef.current.play()
   }
 
   const pause = () => {
