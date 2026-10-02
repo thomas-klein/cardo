@@ -1,4 +1,5 @@
 {
+  "align_episode_title_left": "将单集标题左对齐",
   "home": "主页",
   "settings": "设置",
   "queue": "队列",
@@ -104,5 +105,12 @@
   "opml_invalid": "Invalid OPML file",
   "opml_error": "OPML operation failed",
   "opml_import_result": "{{imported}} imported, {{failed}} failed",
-  "opml_no_new": "All feeds already subscribed"
+  "opml_no_new": "All feeds already subscribed",
+  "previous_episode": "上一集",
+  "next_episode": "下一集",
+  "episode_description": "简介",
+  "episode_navigation": "此播客的其他节目",
+  "no_episode_description": "此节目暂无简介。",
+  "play_episode": "播放",
+  "pause_episode": "暂停"
 }

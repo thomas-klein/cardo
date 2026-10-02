@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { EpisodeData, PodcastData } from '..'
-import appIcon from '../../src-tauri/icons/icon.png'
-import { usePodcastSettings } from '../engines/Settings'
+import { getColor, usePodcastSettings, useSettings } from '../engines/Settings'
+import colors from 'tailwindcss/colors'
 
 export function proxyUrl(url: string | undefined): string | undefined {
   if (!url) return url
@@ -18,39 +18,70 @@ interface EpisodeCoverProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   episode: EpisodeData
 }
 
-export function PodcastCover({ podcast, ...props }: PodcastCoverProps) {
-  const [podcastSettings] = usePodcastSettings(podcast.feedUrl!)
-
-  let coverUrl = podcastSettings.coverUrl ? podcastSettings.coverUrl : (podcast.coverUrlLarge ?? podcast.coverUrl)
-
-  if (!coverUrl?.length) {
-    coverUrl = appIcon
-  }
+function CoverImage({
+  src,
+  name,
+  style,
+  onError,
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement> & { name: string }) {
+  const [failedSrc, setFailedSrc] = useState<string>()
+  const [{ colors: theme }] = useSettings()
+  const words = name.match(/[\p{L}\p{N}]+/gu) ?? []
+  const initials = (
+    words.length > 1
+      ? words
+          .slice(0, 2)
+          .map((word) => Array.from(word)[0])
+          .join('')
+      : Array.from(words[0] ?? '?')
+          .slice(0, 2)
+          .join('')
+  ).toLocaleUpperCase()
+  const [base, shade] = getColor(theme.primary)[2].split('-')
+  const foreground = (colors as unknown as Record<string, Record<string, string>>)[base][shade]
+  const fallback = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="52" dominant-baseline="middle" text-anchor="middle" font-family="system-ui,sans-serif" font-size="38" font-weight="600" fill="${foreground}">${initials}</text></svg>`)}`
 
   return (
     <img
-      src={proxyUrl(coverUrl)}
-      alt=""
+      {...props}
+      className={`aspect-square max-h-full max-w-full ${props.className ?? ''}`}
+      src={!src || failedSrc === src ? fallback : proxyUrl(src)}
+      alt={props.alt ?? ''}
       loading="lazy"
       decoding="async"
-      onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-        e.currentTarget.src = appIcon
+      style={{ backgroundColor: 'var(--color-primary-8)', objectFit: 'cover', ...style }}
+      onError={(event) => {
+        setFailedSrc(src)
+        onError?.(event)
       }}
-      style={{ backgroundColor: 'var(--color-primary-10)' }}
-      {...props}
     />
   )
 }
 
-export function EpisodeCover({ episode, ...props }: EpisodeCoverProps) {
-  const [error, setError] = useState(false)
+export function PodcastCover({ podcast, ...props }: PodcastCoverProps) {
+  const [podcastSettings] = usePodcastSettings(podcast.feedUrl ?? '')
+  const coverUrl = podcastSettings.coverUrl || podcast.coverUrlLarge || podcast.coverUrl
+  return <CoverImage src={coverUrl} name={podcast.podcastName ?? ''} {...props} />
+}
 
-  if (error) return <PodcastCover podcast={episode.podcast!} {...props} />
+export function EpisodeCover({ episode, ...props }: EpisodeCoverProps) {
+  const [failedSrc, setFailedSrc] = useState<string>()
+
+  if (!episode.coverUrl || failedSrc === episode.coverUrl)
+    return <PodcastCover podcast={episode.podcast ?? {}} {...props} />
 
   return (
     <div className="flip">
       <div className="front">
-        <img src={proxyUrl(episode.coverUrl)} alt="" loading="lazy" decoding="async" onError={() => setError(true)} {...props} />
+        <img
+          src={proxyUrl(episode.coverUrl)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          {...props}
+          onError={() => setFailedSrc(episode.coverUrl)}
+        />
       </div>
       <div className="back">
         {episode.podcast?.coverUrl ? (
@@ -61,7 +92,7 @@ export function EpisodeCover({ episode, ...props }: EpisodeCoverProps) {
             alt=""
             loading="lazy"
             decoding="async"
-            onError={() => setError(true)}
+            onError={() => setFailedSrc(episode.coverUrl)}
             {...props}
           />
         )}

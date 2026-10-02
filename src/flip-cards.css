@@ -2,6 +2,18 @@
 .flip {
   position: relative;
   user-select: none;
+  width: 100%;
+  height: 100%;
+
+  > .front {
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
   > .front,
   > .back {
@@ -14,8 +26,10 @@
   }
   > .back {
     position: absolute;
-    top: 0; left: 0;
-    height: 100%; width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
     opacity: 0;
     transform: rotateY(-180deg);
   }

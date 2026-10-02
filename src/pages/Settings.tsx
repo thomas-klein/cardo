@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Checkbox } from '../components/Inputs'
-import { getColor, useSettings } from '../engines/Settings'
+import { useSettings } from '../engines/Settings'
 import { useEffect, useState } from 'react'
 import { TailwindBaseColor } from '..'
 import { DefaultTheme, DefaultThemes, BasicColors } from '../DefaultThemes'
@@ -13,30 +13,27 @@ import { SyncSettings } from '../components/sync/SyncSettings'
 import { useOPML } from '../utils/opml'
 import { heart as heartIcon } from '../Icons'
 import { changeLanguage } from '../engines/translations'
-import * as shell from "@tauri-apps/plugin-shell"
+import * as shell from '@tauri-apps/plugin-shell'
+import colors from 'tailwindcss/colors'
 
 function AccentColorSelector() {
-  const [
-    {
-      colors: { accent },
-    },
-    updateSettings,
-  ] = useSettings()
+  const [, updateSettings] = useSettings()
   const [showSelector, setShowSelector] = useState(false)
 
-  const selectedColor = getColor(accent)
   return (
     <div className="relative">
       <button
-        className={`h-10 w-16 rounded-md border-2 border-${selectedColor[4]}-800 bg-${selectedColor[5]}`}
-        onClick={() => setShowSelector(true)}
+        className="bg-accent-5 border-accent-7 h-10 w-16 rounded-md border-2"
+        aria-expanded={showSelector}
+        onClick={() => setShowSelector((show) => !show)}
       />
 
       {showSelector && (
-        <div className="absolute bottom-0 left-0 z-10 grid min-w-max grid-cols-5 gap-1 rounded-md bg-primary-2 p-1">
+        <div className="bg-primary-2 absolute bottom-0 left-0 z-10 grid min-w-max grid-cols-5 gap-1 rounded-md p-1">
           {BasicColors.map((color) => (
             <button
-              className={`h-10 w-16 rounded-md bg-${color}-500`}
+              className="h-10 w-16 rounded-md"
+              style={{ backgroundColor: colors[color][500] }}
               title={color}
               key={color}
               onClick={(e) => {
@@ -73,8 +70,8 @@ function Settings() {
   }, [])
 
   return (
-    <div className="flex w-full flex-col gap-2 p-2">
-      <div className="flex justify-between rounded-md border-2 border-primary-8 p-2">
+    <div className="settings-page mx-auto flex h-fit w-full max-w-6xl flex-col gap-5 p-4 sm:p-6">
+      <div className="settings-section flex flex-wrap items-center justify-between gap-3">
         <h2>{t('open_settings_file')}:</h2>
         <button className="filled-button text-sm" onClick={() => showBanner()}>
           config.json
@@ -87,23 +84,23 @@ function Settings() {
             shell.open(confFile)
           }}
         >
-          <h1 className="max-w-80 whitespace-pre-line p-1">{t('open_settings_danger_menu')}</h1>
+          <h1 className="max-w-80 p-1 whitespace-pre-line">{t('open_settings_danger_menu')}</h1>
         </Banner>
       </div>
 
-      <div className="flex flex-col gap-1 rounded-md border-2 border-primary-8 p-2">
-        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">{t('sync')}</h1>
+      <div className="settings-section flex flex-col gap-4">
+        <h1 className="settings-section-title uppercase">{t('sync')}</h1>
         <SyncSettings />
       </div>
 
-      <div className="flex flex-col gap-1 rounded-md border-2 border-primary-8 p-2">
-        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">{t('general')}</h1>
+      <div className="settings-section flex flex-col gap-4">
+        <h1 className="settings-section-title uppercase">{t('general')}</h1>
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-3">
           <label className="mb-1 flex items-center gap-2 uppercase">
             {t('language')}:
             <select
-              className="rounded-md bg-primary-8 px-2 py-px text-center outline-none"
+              className="bg-primary-8 rounded-md px-2 py-px text-center outline-none"
               onChange={({ target: { value } }) => {
                 changeLanguage(value)
                 updateSettings({
@@ -111,8 +108,7 @@ function Settings() {
                     language: value,
                   },
                 })
-              }
-              }
+              }}
               value={globals.language}
             >
               {languages?.map((language) => (
@@ -123,7 +119,7 @@ function Settings() {
             </select>
           </label>
 
-          <label className="flex w-fit gap-1">
+          <label className="flex max-w-full items-center gap-3">
             {t('check_updates')}:
             <Checkbox
               defaultChecked={general.checkUpdates}
@@ -131,13 +127,13 @@ function Settings() {
             />
           </label>
 
-          <div className="border-t-2 border-primary-8">
-            <h2 className="mt-1 uppercase">{t('theme')}</h2>
-            <div className="flex gap-10">
+          <div className="settings-subgroup border-primary-7 mt-3 border-t pt-4">
+            <h2 className="mb-3 font-semibold uppercase">{t('theme')}</h2>
+            <div className="flex flex-wrap gap-x-10 gap-y-4">
               <label className="flex items-center gap-2 uppercase">
                 {t('base')}:
                 <select
-                  className="rounded-md bg-primary-8 px-2 py-px text-center outline-none"
+                  className="bg-primary-8 rounded-md px-2 py-px text-center outline-none"
                   onChange={({ target: { value } }) =>
                     updateSettings({
                       colors: {
@@ -166,9 +162,9 @@ function Settings() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1 rounded-md border-2 border-primary-8 p-2">
-        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">{t('import/export')}</h1>
-        <div className="flex gap-3">
+      <div className="settings-section flex flex-col gap-4">
+        <h1 className="settings-section-title uppercase">{t('import/export')}</h1>
+        <div className="flex flex-wrap gap-3">
           <button className="filled-button" onClick={importOPML}>
             {t('import_opml')}
           </button>
@@ -178,10 +174,10 @@ function Settings() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1 rounded-md border-2 border-primary-8 p-2">
-        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">{t('news')}</h1>
+      <div className="settings-section flex flex-col gap-4">
+        <h1 className="settings-section-title uppercase">{t('news')}</h1>
 
-        <label className="flex w-fit gap-1">
+        <label className="flex max-w-full items-center gap-3">
           {t('fetch_subscriptions_startup')}:
           <Checkbox
             defaultChecked={general.fetchSubscriptionsAtStartup}
@@ -193,7 +189,7 @@ function Settings() {
           {t('number_days_news')}:
           <input
             type="text"
-            className="w-14 rounded-md bg-primary-8 px-2 py-1 focus:outline-none"
+            className="bg-primary-8 w-14 rounded-md px-2 py-1 focus:outline-none"
             value={general.numberOfDaysInNews}
             onChange={(e) => {
               const value = Number(e.target.value)
@@ -205,15 +201,15 @@ function Settings() {
         </label>
       </div>
 
-      <div className="flex flex-col gap-1 rounded-md border-2 border-primary-8 p-2">
-        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">{t('playback')}</h1>
-        <div className="flex items-center gap-8">
-          <div className="flex flex-col items-end gap-2">
-            <label className="flex w-fit items-center gap-2">
+      <div className="settings-section flex flex-col gap-4">
+        <h1 className="settings-section-title uppercase">{t('playback')}</h1>
+        <div className="flex flex-wrap items-start gap-8">
+          <div className="flex flex-col items-start gap-3">
+            <label className="flex max-w-full flex-wrap items-center gap-3">
               {t('step_backwards')}:
               <input
                 type="text"
-                className="w-12 rounded-md bg-primary-8 px-2 py-1 focus:outline-none"
+                className="bg-primary-8 w-12 rounded-md px-2 py-1 focus:outline-none"
                 value={playback.stepBackwards}
                 onChange={(e) => {
                   const value = Number(e.target.value)
@@ -224,11 +220,11 @@ function Settings() {
               />
               <p className="-ml-1">s</p>
             </label>
-            <label className="flex w-fit items-center gap-2">
+            <label className="flex max-w-full flex-wrap items-center gap-3">
               {t('step_forward')}:
               <input
                 type="text"
-                className="w-12 rounded-md bg-primary-8 px-2 py-1 focus:outline-none"
+                className="bg-primary-8 w-12 rounded-md px-2 py-1 focus:outline-none"
                 value={playback.stepForward}
                 onChange={(e) => {
                   const value = Number(e.target.value)
@@ -241,15 +237,15 @@ function Settings() {
             </label>
           </div>
 
-          <div className="flex flex-col items-end gap-2">
-            <label className="flex w-fit gap-1">
+          <div className="flex flex-col items-start gap-3">
+            <label className="flex max-w-full items-center gap-3">
               {t('remove_from_queue_end')}:
               <Checkbox
                 defaultChecked={playback.removeFromQueueAtEnd}
                 onChange={(value) => updateSettings({ playback: { removeFromQueueAtEnd: value } })}
               />
             </label>
-            <label className="flex w-fit gap-1">
+            <label className="flex max-w-full items-center gap-3">
               {t('remove_from_downloads_end')}:
               <Checkbox
                 defaultChecked={playback.removeFromDownloadsAtEnd}
@@ -260,10 +256,24 @@ function Settings() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1 rounded-md border-2 border-primary-8 p-2">
-        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">UI</h1>
+      <div className="settings-section flex flex-col gap-4">
+        <h1 className="settings-section-title uppercase">UI</h1>
+        <label className="flex max-w-full flex-wrap items-center gap-3">
+          {t('align_episode_title_left')}:
+          <span className="relative inline-flex cursor-pointer items-center">
+            <input
+              type="checkbox"
+              role="switch"
+              className="peer sr-only"
+              checked={ui.episodeTextAlignLeft}
+              onChange={(e) => updateSettings({ ui: { episodeTextAlignLeft: e.target.checked } })}
+            />
+            <span className="bg-primary-8 peer-checked:bg-accent-6 peer-focus-visible:outline-accent-5 h-6 w-11 rounded-full transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2" />
+            <span className="absolute left-1 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-5" />
+          </span>
+        </label>
         <div>
-          <label className="flex w-fit gap-1">
+          <label className="flex max-w-full items-center gap-3">
             {t('show_pinWindow_button')}:
             <Checkbox
               defaultChecked={ui.showPinWindowButton}
@@ -273,9 +283,9 @@ function Settings() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1 rounded-md border-2 border-primary-8 p-2">
-        <h1 className="mb-2 border-b-2 border-primary-8 uppercase">{t('about')}</h1>
-        <div className="flex gap-3">
+      <div className="settings-section flex flex-col gap-4">
+        <h1 className="settings-section-title uppercase">{t('about')}</h1>
+        <div className="flex flex-wrap gap-3">
           <img
             alt=""
             className="w-28 cursor-pointer transition-all hover:scale-110"
@@ -287,7 +297,7 @@ function Settings() {
             <h1>
               Cardo - {t('podcast_player')} ( v{tauriConfig.version} )
             </h1>
-            <div className="flex gap-10">
+            <div className="flex flex-wrap gap-x-10 gap-y-4">
               <div>
                 <h1>
                   {t('author')}:{' '}
@@ -318,7 +328,7 @@ function Settings() {
                   href="https://github.com/sponsors/cardo-podcast"
                   target="_blank"
                   rel="noreferrer"
-                  className="animate-brightness flex h-12 items-center gap-1 rounded-md bg-primary-1 p-1 px-2 transition-transform hover:scale-105"
+                  className="animate-brightness bg-primary-1 flex h-12 items-center gap-1 rounded-md p-1 px-2 transition-transform hover:scale-105"
                 >
                   <span className="block aspect-square h-12 text-[#bf3989]">{heartIcon}</span>
                   <span className="text-lg">Sponsor</span>

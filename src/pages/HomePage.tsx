@@ -10,10 +10,10 @@ function HomePage() {
   const { t } = useTranslation()
 
   return (
-    <div className="mt-1 flex h-fit w-full flex-col gap-3 p-2">
+    <div className="flex h-fit w-full min-w-0 flex-col gap-8 p-4">
       {queue.queue.length > 0 && (
         <div>
-          <h1 className="mb-1 uppercase">{t('queue')}</h1>
+          <h1 className="mb-3 text-lg font-semibold uppercase">{t('queue')}</h1>
           <EpisodeOverview>
             {queue.queue.map((episode) => (
               <EpisodePreviewCard key={episode.id} episode={episode} />
@@ -24,12 +24,15 @@ function HomePage() {
 
       {latestEpisodes.length > 0 && (
         <div>
-          <h1 className="mb-1 uppercase">{t('news')}</h1>
-          <EpisodeOverview>
+          <h1 className="mb-3 text-lg font-semibold uppercase">{t('news')}</h1>
+          <div
+            className="grid gap-3"
+            style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))' }}
+          >
             {latestEpisodes.map((episode) => (
-              <EpisodePreviewCard key={episode.id} episode={episode} />
+              <EpisodePreviewCard key={episode.id} episode={episode} wide />
             ))}
-          </EpisodeOverview>
+          </div>
         </div>
       )}
 
@@ -38,7 +41,7 @@ function HomePage() {
         queue.queue.length === 0 && latestEpisodes.length === 0 && (
           <div className="flex flex-col items-center gap-4 p-2 px-4">
             <img className="w-36" alt="" src={appIcon} />
-            <h1 className="text-center text-lg text-primary-3">{t('welcome_message')}</h1>
+            <h1 className="text-primary-3 text-center text-lg">{t('welcome_message')}</h1>
           </div>
         )
       }

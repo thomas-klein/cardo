@@ -31,7 +31,7 @@ function SortButton({
 
   return (
     <button
-      className={`bg-primary-8 hover:bg-primary-7 flex w-2/3 items-center justify-center rounded-md ${sort.criterion === criterion ? '.text-accent-6' : ''}`}
+      className={`bg-primary-9 hover:bg-primary-7 flex min-h-10 items-center justify-center gap-2 rounded-md px-4 py-2 ${sort.criterion === criterion ? 'text-primary-1 ring-accent-5 ring-2' : ''}`}
       onClick={() => {
         if (sort.criterion === criterion) {
           updatePodcastSettings({
@@ -71,6 +71,15 @@ function PodcastPreview() {
   const [tweakMenu, setTweakMenu] = useState<'sort' | 'filter' | 'settings' | undefined>(undefined)
   const { t } = useTranslation()
   const [showChangeCoverBanner, ChangeCoverBanner] = useModalBanner()
+
+  useEffect(() => {
+    if (!tweakMenu) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setTweakMenu(undefined)
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [tweakMenu])
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const [visibleItems, setVisibleItems] = useState(() => {
@@ -260,7 +269,7 @@ function PodcastPreview() {
 
       <div className="relative w-full px-1">
         {/* sticky bar that appears when scrolling */}
-        <div className="group border-primary-8 bg-primary-9 absolute top-0 z-10 flex w-full cursor-default items-center gap-2 border-b-2 p-1">
+        <div className="group border-primary-8 bg-primary-9 absolute top-0 right-1 left-1 z-10 flex cursor-default items-center gap-2 border-b-2 p-1">
           <PodcastCover className="bg-primary-7 aspect-square h-10 rounded-md" podcast={podcast} />
 
           <h1 className="text-xl group-hover:hidden">{podcast.podcastName}</h1>
@@ -281,90 +290,13 @@ function PodcastPreview() {
             const scrolledWindows = scrollRef.current.scrollTop / scrollRef.current.clientHeight + 1
             const elementsOnWindow = Math.floor(scrollRef.current.clientHeight / EPISODE_CARD_HEIGHT) + 1
 
-            setVisibleItems((prev) => Math.max(prev, Math.round(scrolledWindows * elementsOnWindow) + PRELOADED_EPISODES))
+            setVisibleItems((prev) =>
+              Math.max(prev, Math.round(scrolledWindows * elementsOnWindow) + PRELOADED_EPISODES),
+            )
           }}
         >
-          {tweakMenu && (
-            <>
-              <div className="absolute top-0 left-0 z-20 h-screen w-screen" onClick={() => setTweakMenu(undefined)} />
-
-              <div className="border-primary-6 bg-primary-9 absolute top-0 left-1/2 z-20 flex w-4/5 -translate-x-1/2 flex-col items-center justify-between overflow-hidden rounded-b-3xl border border-t-0 transition-all duration-200">
-                <div className="flex w-full flex-col items-center gap-1 p-2">
-                  {tweakMenu === 'sort' && (
-                    <div className="flex w-4/5 flex-col items-center justify-center gap-1">
-                      <SortButton podcastUrl={podcast.feedUrl} criterion="date">
-                        {t('date')}
-                      </SortButton>
-                      <SortButton podcastUrl={podcast.feedUrl} criterion="duration">
-                        {t('duration')}
-                      </SortButton>
-                    </div>
-                  )}
-
-                  {tweakMenu === 'filter' && (
-                    <div className="flex w-full flex-col items-center justify-center gap-0.5">
-                      <Switch
-                        state={podcastSettings.filter.played}
-                        setState={(value) => {
-                          updatePodcastSettings({ filter: { played: value } })
-                        }}
-                        labels={[t('not_played'), t('played')]}
-                      />
-
-                      <div>
-                        <label className="flex items-center justify-between gap-2 uppercase">
-                          {t('duration_less_than')}:
-                          <TimeInput
-                            value={podcastSettings.filter.duration.max}
-                            onChange={(v) => updatePodcastSettings({ filter: { duration: { max: v } } })}
-                          />
-                        </label>
-                        <label className="flex items-center justify-between gap-2 uppercase">
-                          {t('duration_greater_than')}:
-                          <TimeInput
-                            value={podcastSettings.filter.duration.min}
-                            onChange={(v) => updatePodcastSettings({ filter: { duration: { min: v } } })}
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  )}
-
-                  {tweakMenu === 'settings' && (
-                    <div className="flex w-4/5 justify-center gap-1">
-                      <div className="flex flex-col items-end">
-                        <label className="flex w-fit gap-1">
-                          {t('download_new')}:
-                          <Checkbox
-                            defaultChecked={podcastSettings.downloadNew}
-                            onChange={(value) => updatePodcastSettings({ downloadNew: value })}
-                          />
-                        </label>
-
-                        <label className="flex w-fit gap-1">
-                          {t('queue_new')}:
-                          <Checkbox
-                            defaultChecked={podcastSettings.queueNew}
-                            onChange={(value) => updatePodcastSettings({ queueNew: value })}
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  className="border-primary-8 mt-1 flex h-5 w-4/5 items-center justify-center border-t-2 p-2"
-                  onClick={() => setTweakMenu(undefined)}
-                >
-                  <span className="h-6 w-6">{icons.upArrow}</span>
-                </button>
-              </div>
-            </>
-          )}
-
-          <div className="justify-left border-primary-8 bg-primary-9 z-10 flex h-52 w-full gap-3 border-b-2 p-2 pb-3">
-            <div className="flex shrink-0 flex-col items-center gap-2">
+          <div className="border-primary-7 bg-primary-9 relative z-10 flex w-full shrink-0 flex-col gap-5 border-b p-4 sm:flex-row">
+            <div className="flex shrink-0 flex-col items-start gap-3">
               <div
                 className="aspect-square h-40 cursor-pointer"
                 onContextMenu={async () => {
@@ -410,8 +342,10 @@ function PodcastPreview() {
                 <button
                   className="hover:text-accent-6"
                   title={t('sort_episodes')}
+                  aria-expanded={tweakMenu === 'sort'}
+                  aria-controls="episode-tools"
                   onClick={() => {
-                    setTweakMenu('sort')
+                    setTweakMenu((current) => (current === 'sort' ? undefined : 'sort'))
                   }}
                 >
                   {icons.sort}
@@ -419,8 +353,10 @@ function PodcastPreview() {
                 <button
                   className="hover:text-accent-6"
                   title={t('filter_episodes')}
+                  aria-expanded={tweakMenu === 'filter'}
+                  aria-controls="episode-tools"
                   onClick={() => {
-                    setTweakMenu('filter')
+                    setTweakMenu((current) => (current === 'filter' ? undefined : 'filter'))
                   }}
                 >
                   {icons.filter}
@@ -428,8 +364,10 @@ function PodcastPreview() {
                 <button
                   className="hover:text-accent-6 h-6 w-6"
                   title={t('podcast_settings')}
+                  aria-expanded={tweakMenu === 'settings'}
+                  aria-controls="episode-tools"
                   onClick={() => {
-                    setTweakMenu('settings')
+                    setTweakMenu((current) => (current === 'settings' ? undefined : 'settings'))
                   }}
                 >
                   {icons.settings}
@@ -447,18 +385,102 @@ function PodcastPreview() {
               {/* #endregion */}
             </div>
 
-            <div className="flex h-full flex-col">
-              <h1 className="text-lg">{podcast.podcastName}</h1>
-              <h2 className="mb-2">{podcast.artistName}</h2>
+            <div className="flex min-w-0 flex-1 flex-col">
+              <h1 className="text-2xl leading-tight font-semibold">{podcast.podcastName}</h1>
+              <h2 className="text-primary-3 mt-1 mb-4 text-base font-medium">{podcast.artistName}</h2>
 
-              <div className="flex overflow-y-auto scroll-smooth rounded-md pr-2">
+              <div className="max-w-[75ch]">
                 <div
-                  className="text-primary-4 text-sm whitespace-pre-line"
+                  className="podcast-description text-primary-3 text-sm leading-7 break-words whitespace-pre-line"
                   dangerouslySetInnerHTML={{ __html: sanitizeHTML(podcast.description ?? '') }}
                 />
               </div>
             </div>
           </div>
+
+          {tweakMenu && (
+            <>
+              <div
+                id="episode-tools"
+                className="episode-tools border-primary-7 bg-primary-8 relative z-10 mx-2 my-3 flex shrink-0 flex-col rounded-lg border p-4 shadow-sm"
+              >
+                <h2 className="mb-3 text-base font-semibold capitalize">
+                  {t(tweakMenu === 'sort' ? 'sort_episodes' : tweakMenu === 'filter' ? 'filter_episodes' : 'podcast_settings')}
+                </h2>
+                <div className="flex w-full flex-col gap-3">
+                  {tweakMenu === 'sort' && (
+                    <div className="flex w-full max-w-lg flex-wrap items-center gap-3">
+                      <SortButton podcastUrl={podcast.feedUrl} criterion="date">
+                        {t('date')}
+                      </SortButton>
+                      <SortButton podcastUrl={podcast.feedUrl} criterion="duration">
+                        {t('duration')}
+                      </SortButton>
+                    </div>
+                  )}
+
+                  {tweakMenu === 'filter' && (
+                    <div className="flex w-full flex-wrap items-center gap-6">
+                      <Switch
+                        state={podcastSettings.filter.played}
+                        setState={(value) => {
+                          updatePodcastSettings({ filter: { played: value } })
+                        }}
+                        labels={[t('not_played'), t('played')]}
+                      />
+
+                      <div>
+                        <label className="flex items-center justify-between gap-2 uppercase">
+                          {t('duration_less_than')}:
+                          <TimeInput
+                            value={podcastSettings.filter.duration.max}
+                            onChange={(v) => updatePodcastSettings({ filter: { duration: { max: v } } })}
+                          />
+                        </label>
+                        <label className="flex items-center justify-between gap-2 uppercase">
+                          {t('duration_greater_than')}:
+                          <TimeInput
+                            value={podcastSettings.filter.duration.min}
+                            onChange={(v) => updatePodcastSettings({ filter: { duration: { min: v } } })}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
+                  {tweakMenu === 'settings' && (
+                    <div className="flex w-full gap-3">
+                      <div className="flex w-full max-w-3xl flex-col gap-3">
+                        <label className="flex w-full items-center justify-between gap-4">
+                          {t('download_new')}:
+                          <Checkbox
+                            defaultChecked={podcastSettings.downloadNew}
+                            onChange={(value) => updatePodcastSettings({ downloadNew: value })}
+                          />
+                        </label>
+
+                        <label className="flex w-full items-center justify-between gap-4">
+                          {t('queue_new')}:
+                          <Checkbox
+                            defaultChecked={podcastSettings.queueNew}
+                            onChange={(value) => updatePodcastSettings({ queueNew: value })}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  className="border-primary-7 hover:bg-primary-7 mt-4 flex w-full items-center justify-center rounded-md border-t p-1"
+                  title={t('cancel')}
+                  onClick={() => setTweakMenu(undefined)}
+                >
+                  <span className="h-6 w-6">{icons.upArrow}</span>
+                </button>
+              </div>
+            </>
+          )}
 
           <div className="flex flex-col px-1">
             {episodes.slice(0, visibleItems).map((episode) => (

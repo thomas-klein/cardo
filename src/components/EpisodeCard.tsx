@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Menu } from '@tauri-apps/api/menu'
 import { useEpisode } from '../engines/Episode'
 import { EpisodeCover } from './Cover'
+import { useSettings } from '../engines/Settings'
 
 function EpisodeCard({
   episode,
@@ -24,6 +25,11 @@ function EpisodeCard({
   const navigate = useNavigate()
   const contextMenuTarget = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
+  const [
+    {
+      ui: { episodeTextAlignLeft },
+    },
+  ] = useSettings()
 
   const {
     reprState,
@@ -40,10 +46,31 @@ function EpisodeCard({
     downloadState,
   } = useEpisode(episode)
 
+  const secondaryTextClass = `text-xs ${reprState.complete ? 'text-primary-6/80' : 'text-primary-4'}`
+  const progressClasses = {
+    div: 'h-4',
+    bar: 'h-1! rounded',
+    innerBar: 'rounded',
+    time: 'shrink-0 whitespace-nowrap text-xs',
+  }
+
+  const playbackButton = (
+    <button
+      className="border-primary-6 hover:text-accent-6 flex aspect-square w-7 shrink-0 items-center justify-center rounded-full border-2 p-1 hover:p-[2px]"
+      onClick={(e) => {
+        e.stopPropagation()
+        inProgress(true) ? pause() : play()
+      }}
+    >
+      <span className="w-5">{inProgress(true) ? icons.pause : icons.play}</span>
+    </button>
+  )
+
   return (
     <div
       ref={contextMenuTarget}
-      className={`flex w-full ${reprState.complete ? 'text-primary-6' : ''} min-h-20 cursor-pointer justify-between gap-4 p-2 ${className}`}
+      className={`episode-row flex w-full ${reprState.complete ? 'text-primary-6' : ''} min-h-20 cursor-pointer justify-between gap-4 p-2 ${className} ${isPlaying ? 'episode-current' : ''}`}
+      aria-current={isPlaying ? 'true' : undefined}
       onClick={() => {
         onClick && onClick()
         navigate('/episode-preview', {
@@ -83,40 +110,35 @@ function EpisodeCard({
           />
         </div>
 
-        <div className="flex w-full flex-col items-end justify-between text-right">
-          <p className={`text-sm ${reprState.complete ? '0' : '-4'}`}>
+        <div
+          className={`min-w-0 flex-1 ${episodeTextAlignLeft ? 'grid grid-cols-[minmax(0,1fr)_auto] content-start gap-x-2 text-left' : 'flex flex-col items-end justify-between text-right'}`}
+        >
+          <p className={`${secondaryTextClass} ${episodeTextAlignLeft ? 'col-start-1' : ''}`}>
             {getDateString()} - {episode.size} MB{' '}
           </p>
-          <h2 className="mb-2" title={stripAllHTML(episode.description)}>
+          <h2
+            className={`min-w-0 text-base leading-snug font-semibold break-words ${isPlaying ? 'text-primary-1' : ''} ${episodeTextAlignLeft ? 'col-start-1 row-start-2 self-center' : 'mb-2'}`}
+            title={stripAllHTML(episode.description)}
+          >
             {episode.title}
           </h2>
-          <div className="flex w-full items-center justify-end gap-2">
+          <div
+            className={`flex w-full items-center gap-2 ${episodeTextAlignLeft ? 'col-start-1 row-start-3 justify-start' : 'justify-end'}`}
+          >
             {inProgress() ? (
-              isPlaying ? (
-                <LiveProgressBar
-                  total={reprState.total}
-                  className={{ div: 'h-1', bar: 'rounded', innerBar: 'rounded' }}
-                />
-              ) : (
-                <ProgressBar
-                  position={position}
-                  total={reprState.total}
-                  className={{ div: 'h-1', bar: 'rounded', innerBar: 'rounded' }}
-                />
-              )
+              <div className={`max-w-sm min-w-0 flex-1 ${secondaryTextClass}`}>
+                {isPlaying ? (
+                  <LiveProgressBar total={reprState.total} className={progressClasses} />
+                ) : (
+                  <ProgressBar position={position} total={reprState.total} className={progressClasses} />
+                )}
+              </div>
             ) : (
-              secondsToStr(reprState.total)
+              <span className={secondaryTextClass}>{secondsToStr(reprState.total)}</span>
             )}
-            <button
-              className="border-primary-6 hover:text-accent-6 flex aspect-square w-7 shrink-0 items-center justify-center rounded-full border-2 p-1 hover:p-[2px]"
-              onClick={(e) => {
-                e.stopPropagation()
-                inProgress(true) ? pause() : play()
-              }}
-            >
-              <span className="w-5">{inProgress(true) ? icons.pause : icons.play}</span>
-            </button>
+            {!episodeTextAlignLeft && playbackButton}
           </div>
+          {episodeTextAlignLeft && <div className="col-start-2 row-start-2 self-center">{playbackButton}</div>}
         </div>
       </>
     </div>

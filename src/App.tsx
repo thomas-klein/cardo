@@ -64,11 +64,11 @@ const App = () => {
               <SyncProvider>
                 <TitleBar />
                 <ToastContainer />
-                <div className="flex h-full w-full justify-start overflow-hidden">
+                <div className="flex min-h-0 w-full flex-1 justify-start overflow-hidden">
                   <LeftMenu />
-                  <div className="flex h-full w-full flex-col overflow-y-hidden">
+                  <div className="flex h-full min-w-0 flex-1 flex-col overflow-y-hidden">
                     <SearchBar />
-                    <div className="border-primary-8 flex h-full overflow-y-auto scroll-smooth border-t">
+                    <div className="border-primary-8 flex min-h-0 flex-1 overflow-y-auto scroll-smooth border-t">
                       <Suspense>
                         <Routes>
                           <Route path="/" element={<HomePage />} />
@@ -82,7 +82,7 @@ const App = () => {
                     </div>
                   </div>
                 </div>
-                <AudioPlayer className="h-28 w-full shrink-0" />
+                <AudioPlayer className="border-primary-7 h-28 w-full shrink-0 border-t" />
               </SyncProvider>
             </AudioPlayerProvider>
           </DBProvider>

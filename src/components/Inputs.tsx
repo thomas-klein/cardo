@@ -30,7 +30,7 @@ export function Switch({
           type="radio"
           checked={state === SwitchState.None}
           onChange={() => setState(SwitchState.None)}
-          className="h-full w-5 appearance-none checked:bg-primary-5"
+          className="checked:bg-primary-5 h-full w-5 appearance-none"
         />
         <input
           type="radio"
@@ -55,13 +55,13 @@ export function Checkbox({
     <div className="relative inline-flex cursor-pointer items-center">
       <input
         type="checkbox"
-        className="peer hidden"
+        className="peer sr-only"
         defaultChecked={defaultChecked}
         onChange={(e) => {
           onChange(Boolean(e.target.checked))
         }}
       />
-      <span className="m-1 flex h-5 w-5 items-center justify-center rounded-md border-2 border-primary-2 bg-white text-center text-lg font-bold text-transparent transition duration-100 ease-in-out peer-checked:text-black">
+      <span className="border-primary-5 bg-primary-9 peer-checked:border-accent-7 peer-checked:bg-accent-7 peer-focus-visible:outline-accent-5 m-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 text-center text-sm font-bold text-transparent transition-colors peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2">
         ✓
       </span>
     </div>
@@ -87,7 +87,7 @@ export function AutocompleteInput({
       <input
         ref={inputRef}
         type="text"
-        className="w-full rounded-md bg-primary-8 px-2 py-1 focus:outline-none"
+        className="bg-primary-8 w-full rounded-md px-2 py-1 focus:outline-none"
         defaultValue={value}
         onChange={(e) => {
           if (options.includes(e.target.value)) {
@@ -102,7 +102,7 @@ export function AutocompleteInput({
         {showOptions.map((option) => (
           <button
             key={option}
-            className="w-full bg-primary-7 p-1 hover:bg-primary-6"
+            className="bg-primary-7 hover:bg-primary-6 w-full p-1"
             onClick={() => {
               if (inputRef.current) {
                 inputRef.current.value = option
@@ -127,7 +127,7 @@ export function TimeInput({ value, onChange }: { value: number; onChange: (t: nu
       placeholder="hh:mm:ss"
       title="hh:mm:ss / mm:ss / ss"
       maxLength={8}
-      className="h-5 w-20 rounded-md bg-primary-8 px-2 py-1 text-center invalid:text-red-600"
+      className="bg-primary-8 h-5 w-20 rounded-md px-2 py-1 text-center invalid:text-red-600"
       defaultValue={secondsToStr(value, true)}
       onChange={(e) => {
         if (e.target.validity.valid) {
@@ -200,7 +200,7 @@ export function RangeInput({
       {/* hover window is a bit higher than the bar */}
       <div
         ref={barRef}
-        className={`relative flex h-1 rounded-md bg-primary-7 ${className}`}
+        className={`bg-primary-7 relative flex h-1 rounded-md ${className}`}
         onMouseMove={(e) => {
           if (dragging) return
           if (!barRef.current) return
@@ -226,10 +226,10 @@ export function RangeInput({
         }}
       >
         <div
-          className={`absolute left-0 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-3 ${!dragging && 'opacity-0'} transition-opacity group-hover:opacity-100`}
+          className={`bg-primary-3 absolute top-1/2 left-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full ${!dragging && 'opacity-0'} transition-opacity group-hover:opacity-100`}
           style={{ left: `${position}%` }}
         />
-        <div className="h-full rounded-md bg-accent-6" style={{ width: `${position}%` }} /> {/* progrss is colored */}
+        <div className="bg-accent-6 h-full rounded-md" style={{ width: `${position}%` }} /> {/* progrss is colored */}
       </div>
     </div>
   )

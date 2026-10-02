@@ -5,7 +5,7 @@ type ProgressBarProps = {
   position: number
   total: number
   showTime?: boolean
-  className?: { div?: string; bar?: string; innerBar?: string }
+  className?: { div?: string; bar?: string; innerBar?: string; time?: string }
 }
 
 const ProgressBar = ({
@@ -20,11 +20,11 @@ const ProgressBar = ({
 
   return (
     <div className={'flex w-full items-center gap-1 text-sm ' + className?.div}>
-      {showTime && <p>{secondsToStr(position)}</p>}
+      {showTime && <p className={className?.time}>{secondsToStr(position)}</p>}
       <div className={'h-full w-full bg-primary-7 ' + className?.bar}>
         <div className={'h-full bg-accent-5 ' + className?.innerBar} style={progressStyle} />
       </div>
-      {showTime && <p>{secondsToStr(total)}</p>}
+      {showTime && <p className={className?.time}>{secondsToStr(total)}</p>}
     </div>
   )
 }

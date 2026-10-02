@@ -1,4 +1,5 @@
 {
+  "align_episode_title_left": "Alinhar os títulos dos episódios à esquerda",
   "home": "Início",
   "settings": "Ajustes",
   "queue": "Fila de reprodução",
@@ -95,5 +96,12 @@
   "opml_invalid": "Invalid OPML file",
   "opml_error": "OPML operation failed",
   "opml_import_result": "{{imported}} imported, {{failed}} failed",
-  "opml_no_new": "All feeds already subscribed"
+  "opml_no_new": "All feeds already subscribed",
+  "previous_episode": "Episódio anterior",
+  "next_episode": "Episódio seguinte",
+  "episode_description": "Descrição",
+  "episode_navigation": "Outros episódios deste podcast",
+  "no_episode_description": "Não há descrição disponível para este episódio.",
+  "play_episode": "Reproduzir",
+  "pause_episode": "Pausar"
 }

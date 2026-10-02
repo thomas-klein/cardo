@@ -1,4 +1,5 @@
 {
+  "align_episode_title_left": "Zarovnat názvy epizod doleva",
   "home": "Domů",
   "settings": "Nastavení",
   "queue": "Fronta",
@@ -113,5 +114,12 @@
   "change_podcast_cover": "Změnit titulní obrázek podcastu",
   "podcast_cover_url": "URL adresa k titulnímu obrázku podcastu",
   "double_click_expand": "Dvojklikem rozbalíte",
-  "double_click_collapse": "Dvojklikem sbalíte"
+  "double_click_collapse": "Dvojklikem sbalíte",
+  "previous_episode": "Předchozí epizoda",
+  "next_episode": "Další epizoda",
+  "episode_description": "Popis",
+  "episode_navigation": "Další epizody tohoto podcastu",
+  "no_episode_description": "Pro tuto epizodu není k dispozici popis.",
+  "play_episode": "Přehrát",
+  "pause_episode": "Pozastavit"
 }

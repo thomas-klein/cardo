@@ -148,6 +148,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       engine: 'iTunes',
     },
     ui: {
+      episodeTextAlignLeft: false,
       showPinWindowButton: false,
       collapsedLeftMenu: true,
       leftMenuWidth: 256,

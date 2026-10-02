@@ -1,4 +1,5 @@
 {
+  "align_episode_title_left": "Alinear los títulos de los episodios a la izquierda",
   "home": "Inicio",
   "settings": "Ajustes",
   "queue": "Cola de reproducción",
@@ -103,5 +104,12 @@
   "change_podcast_cover": "Cambiar la cover del podcast",
   "podcast_cover_url": "Url a la cover del podcast",
   "double_click_expand": "Doble click para expandir",
-  "double_click_collapse": "Doble click para colapsar"
+  "double_click_collapse": "Doble click para colapsar",
+  "previous_episode": "Episodio anterior",
+  "next_episode": "Episodio siguiente",
+  "episode_description": "Descripción",
+  "episode_navigation": "Otros episodios de este podcast",
+  "no_episode_description": "No hay descripción disponible para este episodio.",
+  "play_episode": "Reproducir",
+  "pause_episode": "Pausar"
 }

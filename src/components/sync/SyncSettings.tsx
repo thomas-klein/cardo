@@ -18,16 +18,8 @@ export function SyncSettings() {
     <div className="flex flex-col gap-3 p-1">
       {loggedIn && (
         <div className="flex items-center gap-2">
-          {loggedIn === 'nextcloud' && (
-            <img
-              className="w-32 shrink-0"
-              src={nextcloudLogo}
-              alt="Nextcloud logo"
-            />
-          )}
-          {loggedIn === 'gpodder' && (
-            <img className="w-32 shrink-0" src={gpodderLogo} alt="Gpodder logo" />
-          )}
+          {loggedIn === 'nextcloud' && <img className="w-32 shrink-0" src={nextcloudLogo} alt="Nextcloud logo" />}
+          {loggedIn === 'gpodder' && <img className="w-32 shrink-0" src={gpodderLogo} alt="Gpodder logo" />}
 
           <div className="flex flex-col gap-2">
             <p className="text-lg">{t('logged_in')}</p>
@@ -47,26 +39,26 @@ export function SyncSettings() {
       {!loggedIn && (
         <div className="flex flex-col gap-3">
           <NextcloudSettings />
-          <div className="border-t-2 border-primary-8" />
+          <div className="border-primary-8 border-t-2" />
           <GpodderSettings />
         </div>
       )}
 
       {loggedIn && (
         <>
-          <div className="border-t-2 border-primary-8" />
+          <div className="border-primary-8 border-t-2" />
           {/* SYNC BEHAVIOUR SETTINGS */}
-          <div className="flex flex-col gap-1">
-            <h2 className="uppercase">{t('automatic_sync')}</h2>
-            <div className="flex gap-3">
-              <label className="flex w-fit gap-1">
+          <div className="flex flex-col gap-3">
+            <h2 className="text-primary-2 font-semibold uppercase">{t('automatic_sync')}</h2>
+            <div className="flex flex-wrap gap-4">
+              <label className="flex max-w-full items-center gap-3">
                 {t('when_opening_app')}:
                 <Checkbox
                   defaultChecked={syncSettings.syncAfterAppStart}
                   onChange={(value) => updateSettings({ sync: { syncAfterAppStart: value } })}
                 />
               </label>
-              <label className="flex w-fit gap-1">
+              <label className="flex max-w-full items-center gap-3">
                 {t('when_closing_app')}:
                 <Checkbox
                   defaultChecked={syncSettings.syncBeforeAppClose}

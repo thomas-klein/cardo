@@ -92,6 +92,7 @@ export interface Settings {
     engine: string
   }
   ui: {
+    episodeTextAlignLeft: boolean
     showPinWindowButton: boolean
     collapsedLeftMenu: boolean
     leftMenuWidth: number

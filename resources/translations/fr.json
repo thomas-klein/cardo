@@ -2,6 +2,7 @@
   "home": "Accueil",
   "settings": "Paramètres",
   "queue": "File d'attente",
+  "align_episode_title_left": "Aligner le titre des épisodes à gauche",
   "search_placeholder": "Rechercher",
   "played": "Écouté",
   "not_played": "Non écouté",
@@ -113,5 +114,12 @@
   "change_podcast_cover": "Changer la couverture du podcast",
   "podcast_cover_url": "URL de la couverture du podcast",
   "double_click_expand": "Double-cliquer pour développer",
-  "double_click_collapse": "Double-cliquer pour réduire"
+  "double_click_collapse": "Double-cliquer pour réduire",
+  "previous_episode": "Épisode précédent",
+  "next_episode": "Épisode suivant",
+  "episode_description": "Description",
+  "episode_navigation": "Autres épisodes de ce podcast",
+  "no_episode_description": "Aucune description disponible pour cet épisode.",
+  "play_episode": "Écouter",
+  "pause_episode": "Pause"
 }

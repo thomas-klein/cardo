@@ -10,7 +10,7 @@ import { Menu } from '@tauri-apps/api/menu'
 import { useEpisode } from '../engines/Episode'
 import { EpisodeCover } from './Cover'
 
-function EpisodePreviewCard({ episode }: { episode: EpisodeData | NewEpisodeData }) {
+function EpisodePreviewCard({ episode, wide = false }: { episode: EpisodeData | NewEpisodeData; wide?: boolean }) {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const {
@@ -30,7 +30,8 @@ function EpisodePreviewCard({ episode }: { episode: EpisodeData | NewEpisodeData
 
   return (
     <div
-      className="amber-600 flex w-24 shrink-0 cursor-pointer flex-col rounded-md transition-all duration-100"
+      className={`flex cursor-pointer rounded-lg transition-colors ${wide ? 'border-primary-7 bg-primary-8/50 hover:bg-primary-8 min-w-0 items-start gap-3 border p-3' : 'w-24 shrink-0 flex-col'} ${isPlaying ? 'episode-current' : ''}`}
+      onClick={() => navigate('/episode-preview', { state: { episode } })}
       onContextMenu={async () => {
         const menu = await Menu.new({
           items: [
@@ -52,11 +53,13 @@ function EpisodePreviewCard({ episode }: { episode: EpisodeData | NewEpisodeData
         menu.popup()
       }}
     >
-      <div className="bg-primary-8 relative flex aspect-square w-full flex-col items-center justify-center overflow-hidden rounded-md">
+      <div
+        className={`bg-primary-8 relative flex aspect-square shrink-0 flex-col items-center justify-center overflow-hidden rounded-md ${wide ? 'w-20' : 'w-full'}`}
+      >
         <EpisodeCover
           episode={episode}
           title={episode.podcast?.podcastName}
-          className="w-full bg-purple-950"
+          className="aspect-square w-full object-cover"
           onClick={() => {
             navigate('/episode-preview', {
               state: {
@@ -86,13 +89,16 @@ function EpisodePreviewCard({ episode }: { episode: EpisodeData | NewEpisodeData
           <span className="w-5 text-white">{inProgress(true) ? icons.pause : icons.play}</span>
         </button>
       </div>
-      <div className="relative">
-        <h1 className="line-clamp-2 text-sm" title={episode.title}>
+      <div className={`relative min-w-0 ${wide ? 'flex flex-1 flex-col gap-2' : ''}`}>
+        <h1
+          className={`${wide ? 'line-clamp-4 leading-snug font-semibold' : 'line-clamp-2 text-sm'}`}
+          title={episode.title}
+        >
           {episode.title}
         </h1>
         <div className="flex items-center gap-2">
           {(episode as NewEpisodeData).new && <span className="bg-accent-5 h-2 w-2 rounded-full" title={t('new')} />}
-          <h2 className="0 text-sm">{getDateString()}</h2>
+          <h2 className="text-primary-3 text-sm">{getDateString()}</h2>
         </div>
       </div>
     </div>

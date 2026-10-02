@@ -1,4 +1,5 @@
 {
+  "align_episode_title_left": "Bölüm başlıklarını sola hizala",
   "home": "Ana sayfa",
   "settings": "Ayarlar",
   "queue": "Oynatma sırası",
@@ -97,5 +98,12 @@
   "opml_import_result": "{{imported}} imported, {{failed}} failed",
   "opml_no_new": "All feeds already subscribed",
   "change_podcast_cover": "Podcast kapağını değiştir",
-  "podcast_cover_url": "Podcast kapak URL’i"
+  "podcast_cover_url": "Podcast kapak URL’i",
+  "previous_episode": "Önceki bölüm",
+  "next_episode": "Sonraki bölüm",
+  "episode_description": "Açıklama",
+  "episode_navigation": "Bu podcastin diğer bölümleri",
+  "no_episode_description": "Bu bölüm için açıklama mevcut değil.",
+  "play_episode": "Oynat",
+  "pause_episode": "Duraklat"
 }
