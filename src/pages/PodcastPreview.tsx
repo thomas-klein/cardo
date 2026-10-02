@@ -295,10 +295,10 @@ function PodcastPreview() {
             )
           }}
         >
-          <div className="border-primary-7 bg-primary-9 relative z-10 flex w-full shrink-0 flex-col gap-5 border-b p-4 sm:flex-row">
+          <div className="border-primary-7 bg-primary-9 relative z-10 flex h-48 w-full shrink-0 gap-3 border-b p-4 sm:h-58 sm:gap-5">
             <div className="flex shrink-0 flex-col items-start gap-3">
               <div
-                className="aspect-square h-40 cursor-pointer"
+                className="aspect-square h-20 cursor-pointer sm:h-40"
                 onContextMenu={async () => {
                   const menu = await Menu.new({
                     items: [
@@ -316,7 +316,7 @@ function PodcastPreview() {
                   menu.popup()
                 }}
               >
-                <PodcastCover className="bg-primary-7 aspect-square h-40 rounded-md" podcast={podcast} />
+                <PodcastCover className="bg-primary-7 aspect-square h-20 rounded-md sm:h-40" podcast={podcast} />
               </div>
 
               {/* #region BUTTONS */}
@@ -385,11 +385,22 @@ function PodcastPreview() {
               {/* #endregion */}
             </div>
 
-            <div className="flex min-w-0 flex-1 flex-col">
-              <h1 className="text-2xl leading-tight font-semibold">{podcast.podcastName}</h1>
-              <h2 className="text-primary-3 mt-1 mb-4 text-base font-medium">{podcast.artistName}</h2>
+            <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
+              <h1 className="line-clamp-2 shrink-0 text-2xl leading-tight font-semibold" title={podcast.podcastName}>
+                {podcast.podcastName}
+              </h1>
+              <h2
+                className="text-primary-3 mt-1 mb-4 shrink-0 truncate text-base font-medium"
+                title={podcast.artistName}
+              >
+                {podcast.artistName}
+              </h2>
 
-              <div className="max-w-[75ch]">
+              <div
+                className="podcast-description-scroll min-h-0 max-w-[75ch] flex-1 overflow-y-auto overscroll-contain rounded-md px-3 py-2"
+                tabIndex={0}
+                aria-label={t('episode_description')}
+              >
                 <div
                   className="podcast-description text-primary-3 text-sm leading-7 break-words whitespace-pre-line"
                   dangerouslySetInnerHTML={{ __html: sanitizeHTML(podcast.description ?? '') }}
@@ -405,7 +416,13 @@ function PodcastPreview() {
                 className="episode-tools border-primary-7 bg-primary-8 relative z-10 mx-2 my-3 flex shrink-0 flex-col rounded-lg border p-4 shadow-sm"
               >
                 <h2 className="mb-3 text-base font-semibold capitalize">
-                  {t(tweakMenu === 'sort' ? 'sort_episodes' : tweakMenu === 'filter' ? 'filter_episodes' : 'podcast_settings')}
+                  {t(
+                    tweakMenu === 'sort'
+                      ? 'sort_episodes'
+                      : tweakMenu === 'filter'
+                        ? 'filter_episodes'
+                        : 'podcast_settings',
+                  )}
                 </h2>
                 <div className="flex w-full flex-col gap-3">
                   {tweakMenu === 'sort' && (

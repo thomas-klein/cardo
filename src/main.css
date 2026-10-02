@@ -103,6 +103,22 @@ h2 {
   min-height: 32px;
 }
 
+.podcast-description-scroll {
+  --description-background: color-mix(in srgb, var(--color-primary-8) 24%, var(--color-primary-9));
+  background-color: var(--description-background);
+  /* The local cover hides the stationary shadow when the bottom is reached,
+     and also when the description fits without scrolling. */
+  background-image:
+    linear-gradient(to top, var(--description-background) 30%, transparent),
+    linear-gradient(to top, rgb(0 0 0 / 25%), transparent);
+  background-position: bottom, bottom;
+  background-size:
+    100% 40px,
+    100% 12px;
+  background-repeat: no-repeat;
+  background-attachment: local, scroll;
+}
+
 .podcast-description :where(p, ul, ol) {
   margin-bottom: 0.75em;
 }
