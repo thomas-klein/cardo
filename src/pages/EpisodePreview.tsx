@@ -184,15 +184,12 @@ function EpisodePreview() {
           )}
         </div>
       </header>
-      <section className="episode-detail-description-panel" aria-labelledby="episode-description-title">
-        <h2 id="episode-description-title" className="episode-detail-section-title">
-          {t('episode_description')}
-        </h2>
+      <section className="episode-detail-description-panel" aria-label={t('episode_description')}>
         <div
           ref={descriptionRef}
           className="episode-detail-description"
           tabIndex={0}
-          aria-labelledby="episode-description-title"
+          aria-label={t('episode_description')}
         >
           {episode.description ? (
             <div

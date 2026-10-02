@@ -213,21 +213,12 @@ h2 {
 
 .episode-detail-description-panel {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   min-height: 0;
   min-width: 0;
-  margin: 16px 20px;
-  border: 1px solid var(--color-primary-7);
-  border-radius: 10px;
+  margin: 0 0 16px;
   overflow: hidden;
-  background: color-mix(in srgb, var(--color-primary-10) 25%, var(--color-primary-9));
-}
-.episode-detail-section-title {
-  padding: 10px 20px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border-bottom: 1px solid var(--color-primary-7);
-  background: color-mix(in srgb, var(--color-primary-8) 40%, var(--color-primary-9));
+  background: color-mix(in srgb, var(--color-primary-10) 15%, var(--color-primary-9));
 }
 .episode-detail-description {
   min-height: 0;
@@ -359,7 +350,10 @@ h2 {
     height: 72px;
   }
   .episode-detail-description-panel {
-    margin: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .episode-detail-description {
+    padding-inline: 14px;
   }
   .episode-detail-neighbors {
     gap: 8px;
@@ -404,13 +398,10 @@ h2 {
     margin-top: 4px;
   }
   .episode-detail-description-panel {
-    margin-block: 8px;
-  }
-  .episode-detail-section-title {
-    padding-block: 6px;
+    margin-bottom: 8px;
   }
   .episode-detail-description {
-    padding: 12px 20px;
+    padding-block: 12px;
   }
   .episode-detail-neighbors {
     padding-bottom: 8px;
