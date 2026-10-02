@@ -29,14 +29,15 @@ export function useEpisodeStateStore(db: Database) {
     [db],
   )
 
-  const getSync = useCallback(
-    (episodeUrl: string) => cache.get(episodeUrl),
-    [cache],
-  )
+  const getSync = useCallback((episodeUrl: string) => cache.get(episodeUrl), [cache])
 
   const getAll = useCallback(
-    async function (timestamp = 0): Promise<EpisodeState[]> {
-      const r: EpisodeState[] = await db.select(`SELECT * from episodes_history WHERE timestamp > $1`, [timestamp])
+    async function (timestamp?: number): Promise<EpisodeState[]> {
+      // Display legacy history even when it has no synchronization timestamp.
+      const r: EpisodeState[] =
+        timestamp === undefined
+          ? await db.select('SELECT * from episodes_history')
+          : await db.select('SELECT * from episodes_history WHERE timestamp > $1', [timestamp])
 
       return r
     },
@@ -52,7 +53,7 @@ export function useEpisodeStateStore(db: Database) {
       const pos = Math.min(position, total)
       const tot = Math.max(position, total)
 
-      setCache(prev => {
+      setCache((prev) => {
         const next = new Map(prev)
         next.set(episodeUrl, {
           episode: episodeUrl,
@@ -69,7 +70,7 @@ export function useEpisodeStateStore(db: Database) {
         VALUES ($1, $2, $3, $4, $5)
         ON CONFLICT (episode) DO UPDATE
         SET position = $3, total = $4, timestamp = $5
-        WHERE episode = $1 AND timestamp < $5 AND position <> $3`,
+        WHERE episode = $1 AND (timestamp IS NULL OR (timestamp < $5 AND position <> $3))`,
         [episodeUrl, podcastUrl, pos, tot, ts],
       )
     },
@@ -77,7 +78,7 @@ export function useEpisodeStateStore(db: Database) {
   )
 
   useEffect(() => {
-    getAll().then(states => {
+    getAll().then((states) => {
       const map = new Map<string, EpisodeState>()
       for (const s of states) map.set(s.episode, s)
       setCache(map)

@@ -23,19 +23,24 @@ import { EpisodeCover } from './Cover'
 import { proxyUrl } from '../utils/imageProxy'
 import * as globalShortcut from "@tauri-apps/plugin-global-shortcut"
 
-function PositionProvider({ audioRef, children }: { audioRef: RefObject<HTMLAudioElement | null>; children: ReactNode }) {
-  const [position, setPosition] = useState(0)
+function PositionProvider({ audioRef, episodeSrc, initialPosition, children }: {
+  audioRef: RefObject<HTMLAudioElement | null>
+  episodeSrc?: string
+  initialPosition: number
+  children: ReactNode
+}) {
+  const [progress, setProgress] = useState<{ episodeSrc?: string; position: number }>({ position: 0 })
 
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) { return }
-    const onTimeUpdate = () => setPosition(audio.currentTime)
+    const onTimeUpdate = () => setProgress({ episodeSrc, position: audio.currentTime })
     audio.addEventListener('timeupdate', onTimeUpdate)
     return () => audio.removeEventListener('timeupdate', onTimeUpdate)
-  }, [])
+  }, [episodeSrc])
 
   return (
-    <PlayerPositionContext.Provider value={position}>
+    <PlayerPositionContext.Provider value={progress.episodeSrc === episodeSrc ? progress.position : initialPosition}>
       {children}
     </PlayerPositionContext.Provider>
   )
@@ -164,6 +169,9 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     }
   }, [playing])
 
+  const savedState = playing && history.getSync(playing.src)
+  const initialPosition = savedState && savedState.position < savedState.total ? savedState.position : 0
+
   return (
     <PlayerContext.Provider
       value={{
@@ -177,7 +185,11 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
         quit,
       }}
     >
-      <PositionProvider audioRef={audioRef}>
+      <PositionProvider
+        audioRef={audioRef}
+        episodeSrc={playing?.src}
+        initialPosition={initialPosition}
+      >
         {children}
       </PositionProvider>
     </PlayerContext.Provider>

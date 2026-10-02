@@ -27,6 +27,7 @@ const audio = {
 }
 let resolveHistory
 const history = {
+  getSync: () => undefined,
   get: () => {
     reads++
     return new Promise((resolve) => {
@@ -109,6 +110,46 @@ player.pause()
 await player.play()
 assert.equal(playedAt.at(-1), 350)
 assert.equal(loads, 2)
+// Live progress belongs to an episode, and must not leak into a new episode before timeupdate.
+let positionState
+let positionEffect
+const listeners = new Map()
+audio.addEventListener = (event, listener) => listeners.set(event, listener)
+audio.removeEventListener = (event, listener) => {
+  if (listeners.get(event) === listener) listeners.delete(event)
+}
+mocks.react.useState = (initial) => {
+  positionState ??= initial
+  return [
+    positionState,
+    (value) => {
+      positionState = value
+    },
+  ]
+}
+mocks.react.useEffect = (effect) => {
+  positionEffect = effect
+}
+const positionProvider = exports.AudioPlayerProvider({ children: null }).props.children.type
+const positionProps = { audioRef: { current: audio }, episodeSrc: 'remote', initialPosition: 120, children: null }
+const renderPosition = () => positionProvider(positionProps).props.value
+assert.equal(renderPosition(), 120)
+let cleanup = positionEffect()
+audio.currentTime = 900
+listeners.get('timeupdate')()
+assert.equal(renderPosition(), 900)
+positionProps.episodeSrc = 'downloaded'
+positionProps.initialPosition = 300
+assert.equal(renderPosition(), 300, 'A newly selected episode must never display the previous episode position')
+cleanup()
+cleanup = positionEffect()
+audio.currentTime = 320
+listeners.get('timeupdate')()
+assert.equal(renderPosition(), 320)
+positionProps.episodeSrc = 'unstarted'
+positionProps.initialPosition = 0
+assert.equal(renderPosition(), 0)
+cleanup()
 console.log(
   'Playback checks passed: live resume after progress and seeks, zero position, saved-position loading, downloaded episodes, player controls.',
 )
