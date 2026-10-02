@@ -334,7 +334,7 @@ function VolumeControl({ audioRef }: { audioRef: RefObject<HTMLAudioElement> }) 
         step={0.01}
         units="%"
         onChange={changeVolume}
-        className="ml-2 w-24"
+        className="ml-2 w-24 cursor-pointer"
       />
     </div>
   )
@@ -501,7 +501,7 @@ function AudioPlayer({ className = '' }) {
                   max={duration}
                   value={position}
                   onChange={(value) => changeTime(value)}
-                  className="mx-4 w-full"
+                  className="mx-4 w-full cursor-pointer"
                 />
                 <p
                   className="cursor-pointer select-none"
