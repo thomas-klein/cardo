@@ -13,6 +13,15 @@ import tauriConfig from '../../../src-tauri/tauri.conf.json'
 
 // Note that these values must be escaped if they contain special characters.
 // The .env values are populated into the Javascript layer by Vite.
+export class PodcastIndexConfigurationError extends Error {
+  constructor() {
+    super(
+      'PodcastIndex requires VITE_PODCASTINDEX_API_KEY and VITE_PODCASTINDEX_API_SECRET in .env.local. Restart the app after configuring them.',
+    )
+    this.name = 'PodcastIndexConfigurationError'
+  }
+}
+
 export async function searchPodcastIndex(term: string): Promise<Array<PodcastData>> {
   const searchParams = new URLSearchParams({ q: term.trim() })
   const url = `https://api.podcastindex.org/api/1.0/search/byterm?${searchParams.toString()}`
@@ -20,8 +29,7 @@ export async function searchPodcastIndex(term: string): Promise<Array<PodcastDat
   const apiKey = import.meta.env.VITE_PODCASTINDEX_API_KEY
   const apiSecret = import.meta.env.VITE_PODCASTINDEX_API_SECRET
   if (!apiKey || !apiSecret) {
-    // Read the comment above if this throws an error.
-    throw new Error('No API key or secret specified for PodcastIndex')
+    throw new PodcastIndexConfigurationError()
   }
 
   const response = await tauriFetch(url, {
@@ -34,6 +42,10 @@ export async function searchPodcastIndex(term: string): Promise<Array<PodcastDat
       'User-Agent': tauriConfig.productName + '/' + tauriConfig.version,
     },
   })
+
+  if (!response.ok) {
+    throw new Error(`PodcastIndex: HTTP ${response.status}`)
+  }
 
   const apiResults = (await response.json()).feeds
   const results: PodcastData[] = []

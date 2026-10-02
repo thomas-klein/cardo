@@ -6,8 +6,9 @@ function PodcastCard({ podcast }: { podcast: PodcastData }) {
   const navigate = useNavigate()
 
   return (
-    <div
-      className="flex min-h-20 cursor-pointer justify-between gap-2 border-b-2 border-primary-8 p-2 transition-colors hover:bg-primary-8"
+    <button
+      type="button"
+      className="hover:bg-primary-8 flex w-full items-center gap-4 rounded-lg p-3 text-left transition-colors"
       onClick={() => {
         navigate('/preview', {
           state: {
@@ -16,13 +17,13 @@ function PodcastCard({ podcast }: { podcast: PodcastData }) {
         })
       }}
     >
-      <PodcastCover className="aspect-square h-20 rounded-md bg-primary-7" podcast={podcast} />
+      <PodcastCover className="bg-primary-7 h-16 w-16 shrink-0 rounded-lg" podcast={podcast} />
 
-      <div className="flex flex-col text-right">
-        <p className="text-lg">{podcast.podcastName}</p>
-        <p>{podcast.artistName}</p>
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
+        <p className="line-clamp-2 text-base leading-snug font-semibold">{podcast.podcastName}</p>
+        <p className="text-primary-4 truncate text-sm">{podcast.artistName}</p>
       </div>
-    </div>
+    </button>
   )
 }
 

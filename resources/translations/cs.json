@@ -4,6 +4,8 @@
   "settings": "Nastavení",
   "queue": "Fronta",
   "search_placeholder": "Hledat",
+  "close_search": "Zavřít hledání",
+  "no_search_results": "Žádné výsledky pro toto hledání.",
   "played": "Přehrané",
   "not_played": "Nepřehrané",
   "mark_played": "Označit jako přehrané",

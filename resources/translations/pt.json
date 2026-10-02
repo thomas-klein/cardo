@@ -4,6 +4,8 @@
   "settings": "Ajustes",
   "queue": "Fila de reprodução",
   "search_placeholder": "Buscar",
+  "close_search": "Fechar pesquisa",
+  "no_search_results": "Nenhum resultado para esta pesquisa.",
   "played": "Reproduzido",
   "not_played": "Não reproduzido",
   "mark_played": "Marcar como reproduzido",

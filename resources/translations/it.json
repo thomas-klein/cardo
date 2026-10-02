@@ -4,6 +4,8 @@
   "settings": "Impostazioni",
   "queue": "Coda",
   "search_placeholder": "Cerca",
+  "close_search": "Chiudi ricerca",
+  "no_search_results": "Nessun risultato per questa ricerca.",
   "played": "Riprodotti",
   "not_played": "Da riprodurre",
   "mark_played": "Marca come riprodotto",

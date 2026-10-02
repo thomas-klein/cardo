@@ -98,6 +98,18 @@ pnpm install
 
 #### Run and debug
 
+PodcastIndex searches require an API key and secret. Create a `.env.local` file
+in the project root with your credentials:
+
+```dotenv
+VITE_PODCASTINDEX_API_KEY=your_api_key
+VITE_PODCASTINDEX_API_SECRET=your_api_secret
+```
+
+Restart the development server after changing this file, or rebuild the app for
+a packaged release. `.env.local` is ignored by Git. iTunes and fyyd searches do
+not require these credentials.
+
 Debug from the command line:
 ```bash
 pnpm tauri dev

@@ -4,6 +4,8 @@
   "settings": "Ayarlar",
   "queue": "Oynatma sırası",
   "search_placeholder": "Ara",
+  "close_search": "Aramayı kapat",
+  "no_search_results": "Bu arama için sonuç bulunamadı.",
   "played": "Oynatıldı",
   "not_played": "Oynatılmadı",
   "mark_played": "Oynatıldı olarak işaretle",

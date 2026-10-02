@@ -4,6 +4,8 @@
   "settings": "设置",
   "queue": "队列",
   "search_placeholder": "搜索",
+  "close_search": "关闭搜索",
+  "no_search_results": "未找到搜索结果。",
   "played": "已完播",
   "not_played": "未完播",
   "mark_played": "标记为已完播",

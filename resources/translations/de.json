@@ -4,6 +4,8 @@
   "settings": "Einstellungen",
   "queue": "Warteschlange",
   "search_placeholder": "Suchen",
+  "close_search": "Suche schließen",
+  "no_search_results": "Keine Ergebnisse für diese Suche.",
   "played": "abgespielt",
   "not_played": "nicht abgespielt",
   "mark_played": "als abgespielt markieren",

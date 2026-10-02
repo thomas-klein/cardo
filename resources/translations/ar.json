@@ -4,6 +4,8 @@
   "settings": "الإعدادات",
   "queue": "قائمة الانتظار",
   "search_placeholder": "بحث",
+  "close_search": "إغلاق البحث",
+  "no_search_results": "لا توجد نتائج لهذا البحث.",
   "played": "تم الاستماع",
   "not_played": "لم يتم الاستماع",
   "mark_played": "وضع علامة كمستمع",
