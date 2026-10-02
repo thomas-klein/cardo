@@ -103,5 +103,10 @@
   "episode_navigation": "Outros episódios deste podcast",
   "no_episode_description": "Não há descrição disponível para este episódio.",
   "play_episode": "Reproduzir",
-  "pause_episode": "Pausar"
+  "pause_episode": "Pausar",
+  "view_all": "Ver todos",
+  "news_unstarted_description": "Os 30 episódios mais recentes que ainda não começou a ouvir.",
+  "news_empty": "Não há episódios por começar.",
+  "loading_episodes": "A carregar episódios…",
+  "episodes_load_error": "Não foi possível carregar os episódios."
 }

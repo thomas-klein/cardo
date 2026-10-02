@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { sync, home, settings, queue, download } from '../Icons'
+import { sync, home, news, settings, queue, download } from '../Icons'
 import SubscriptionCard from './SubscriptionCard'
 import { useSettings } from '../engines/Settings'
 import { useModalBanner } from './ModalBanner'
@@ -169,6 +169,10 @@ function LeftMenu() {
           <NavLink to="/" className={navClass} title={t('home')}>
             <span className="w-6 shrink-0">{home}</span>
             {!collapsed && t('home')}
+          </NavLink>
+          <NavLink to="/news" className={navClass} title={t('news')} aria-label={t('news')}>
+            <span className="w-6 shrink-0">{news}</span>
+            {!collapsed && t('news')}
           </NavLink>
           <NavLink to="/queue" className={navClass} title={t('queue')}>
             <span className="w-6 shrink-0">{queue}</span>

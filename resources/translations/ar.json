@@ -105,5 +105,10 @@
   "episode_navigation": "حلقات أخرى من هذا البودكاست",
   "no_episode_description": "لا يوجد وصف لهذه الحلقة.",
   "play_episode": "تشغيل",
-  "pause_episode": "إيقاف مؤقت"
+  "pause_episode": "إيقاف مؤقت",
+  "view_all": "عرض الكل",
+  "news_unstarted_description": "أحدث 30 حلقة لم تبدأ الاستماع إليها.",
+  "news_empty": "لا توجد حلقات لم تبدأ الاستماع إليها.",
+  "loading_episodes": "جارٍ تحميل الحلقات…",
+  "episodes_load_error": "تعذر تحميل الحلقات."
 }

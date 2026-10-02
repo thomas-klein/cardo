@@ -440,6 +440,22 @@ export const mute = (
   </svg>
 )
 
+export const news = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.5}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" />
+    <path d="M8 8h8M8 12h8M8 16h5" />
+  </svg>
+)
+
 export const home = (
   <svg
     xmlns="http://www.w3.org/2000/svg"

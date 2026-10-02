@@ -43,7 +43,8 @@ export function useDownloadsStore(db: Database) {
       const r: (DownloadedEpisode & { podcastCover: string })[] = await db.select(
         `SELECT downloads.*, subscriptions.coverUrl AS podcastCover from downloads
         left join subscriptions_episodes ON subscriptions_episodes.src = downloads.src
-        LEFT JOIN subscriptions ON subscriptions_episodes.podcastUrl = subscriptions.feedUrl`,
+        LEFT JOIN subscriptions ON subscriptions_episodes.podcastUrl = subscriptions.feedUrl
+        ORDER BY downloads.rowid ASC`,
       )
 
       return r.map((episode) => ({

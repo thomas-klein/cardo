@@ -114,12 +114,17 @@
   "change_podcast_cover": "Change the podcast cover",
   "podcast_cover_url": "URL to the podcast cover",
   "double_click_expand": "Double click to expand",
-  "double_click_collapse": "Double click to collapse",
+  "double_click_collapse": "Double click to collapse",
   "previous_episode": "Previous episode",
   "next_episode": "Next episode",
   "episode_description": "Description",
   "episode_navigation": "Other episodes of this podcast",
   "no_episode_description": "No description available for this episode.",
   "play_episode": "Play",
-  "pause_episode": "Pause"
+  "pause_episode": "Pause",
+  "view_all": "View all",
+  "news_unstarted_description": "The 30 most recent episodes you haven’t started listening to.",
+  "news_empty": "No unstarted episodes to listen to.",
+  "loading_episodes": "Loading episodes…",
+  "episodes_load_error": "Could not load episodes."
 }

@@ -112,5 +112,10 @@
   "episode_navigation": "此播客的其他节目",
   "no_episode_description": "此节目暂无简介。",
   "play_episode": "播放",
-  "pause_episode": "暂停"
+  "pause_episode": "暂停",
+  "view_all": "查看全部",
+  "news_unstarted_description": "您尚未开始收听的最新30集节目。",
+  "news_empty": "没有尚未开始收听的节目。",
+  "loading_episodes": "正在加载节目…",
+  "episodes_load_error": "无法加载节目。"
 }

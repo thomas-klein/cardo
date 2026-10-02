@@ -121,5 +121,10 @@
   "episode_navigation": "Další epizody tohoto podcastu",
   "no_episode_description": "Pro tuto epizodu není k dispozici popis.",
   "play_episode": "Přehrát",
-  "pause_episode": "Pozastavit"
+  "pause_episode": "Pozastavit",
+  "view_all": "Zobrazit vše",
+  "news_unstarted_description": "30 nejnovějších epizod, které jste ještě nezačali poslouchat.",
+  "news_empty": "Žádné neposlechnuté epizody.",
+  "loading_episodes": "Načítání epizod…",
+  "episodes_load_error": "Epizody se nepodařilo načíst."
 }

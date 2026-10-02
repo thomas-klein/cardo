@@ -103,5 +103,10 @@
   "episode_navigation": "Weitere Episoden dieses Podcasts",
   "no_episode_description": "Für diese Episode ist keine Beschreibung verfügbar.",
   "play_episode": "Abspielen",
-  "pause_episode": "Pause"
+  "pause_episode": "Pause",
+  "view_all": "Alle anzeigen",
+  "news_unstarted_description": "Die 30 neuesten Episoden, die Sie noch nicht angefangen haben.",
+  "news_empty": "Keine noch nicht begonnenen Episoden.",
+  "loading_episodes": "Episoden werden geladen…",
+  "episodes_load_error": "Episoden konnten nicht geladen werden."
 }

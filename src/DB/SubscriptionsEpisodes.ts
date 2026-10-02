@@ -82,19 +82,19 @@ export function useSubscriptionsEpisodesStore(db: Database) {
         subscriptions ON subscriptions.feedUrl = se.podcastUrl
       WHERE
         se.pubDate > ?`
-      let optionalParams: string[] = [];
+      let optionalParams: string[] = []
 
       if (options.podcastUrl) {
         query += ' AND podcastUrl = ?'
-        optionalParams.push(options.podcastUrl);
+        optionalParams.push(options.podcastUrl)
       }
 
       if (options.searchTerm) {
         // Escape any % characters provided by the user with a backslash.
         query += ` AND (lower(se.title) LIKE ? ESCAPE "\\"
                       OR lower(se.description) LIKE ? ESCAPE "\\")`
-        optionalParams.push('%' + options.searchTerm.toLowerCase().replace('%', '\\%') + '%');
-        optionalParams.push('%' + options.searchTerm.toLowerCase().replace('%', '\\%') + '%');
+        optionalParams.push('%' + options.searchTerm.toLowerCase().replace('%', '\\%') + '%')
+        optionalParams.push('%' + options.searchTerm.toLowerCase().replace('%', '\\%') + '%')
       }
 
       const r: (EpisodeData & { coverUrl: string })[] = await db.select(query, [
@@ -167,5 +167,30 @@ export function useSubscriptionsEpisodesStore(db: Database) {
     [db],
   )
 
-  return { save, getAll, remove, loadNew, fetchingFeeds, fetchFeed }
+  const getUnstarted = useCallback(
+    async (limit = 30): Promise<EpisodeData[]> => {
+      const rows: (EpisodeData & { podcastName: string; podcastCover: string })[] = await db.select(
+        `SELECT se.*, s.podcastName, s.coverUrl AS podcastCover
+       FROM subscriptions_episodes se
+       JOIN subscriptions s ON s.feedUrl = se.podcastUrl
+       LEFT JOIN episodes_history eh ON eh.episode = se.src
+       WHERE eh.position IS NULL OR eh.position <= 0
+       ORDER BY se.pubDate DESC, se.src ASC
+       LIMIT $1`,
+        [limit],
+      )
+      return rows.map((episode) => ({
+        ...episode,
+        pubDate: new Date(episode.pubDate),
+        podcast: {
+          feedUrl: episode.podcastUrl,
+          podcastName: episode.podcastName,
+          coverUrl: episode.podcastCover,
+        },
+      }))
+    },
+    [db],
+  )
+
+  return { save, getAll, getUnstarted, remove, loadNew, fetchingFeeds, fetchFeed }
 }

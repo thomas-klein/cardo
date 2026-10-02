@@ -105,5 +105,10 @@
   "episode_navigation": "Bu podcastin diğer bölümleri",
   "no_episode_description": "Bu bölüm için açıklama mevcut değil.",
   "play_episode": "Oynat",
-  "pause_episode": "Duraklat"
+  "pause_episode": "Duraklat",
+  "view_all": "Tümünü gör",
+  "news_unstarted_description": "Dinlemeye başlamadığınız en yeni 30 bölüm.",
+  "news_empty": "Başlanmamış bölüm yok.",
+  "loading_episodes": "Bölümler yükleniyor…",
+  "episodes_load_error": "Bölümler yüklenemedi."
 }
