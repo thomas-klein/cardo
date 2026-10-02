@@ -66,19 +66,22 @@ function NewSubscriptionButton({ mini = false }: { mini?: boolean }) {
         </div>
       </Banner>
 
-      <div
-        className={`group hover:bg-primary-8 flex gap-2 rounded-md p-1 transition-all ${mini ? 'justify-center' : 'justify-between'}`}
+      <button
+        type="button"
+        onClick={() => showBanner()}
+        title={t('add_subscription_url')}
+        aria-label={t('add_subscription_url')}
+        className={`group hover:bg-primary-8 flex w-full items-center gap-2 rounded-md p-1 text-left transition-colors ${mini ? 'justify-center' : ''}`}
       >
-        <button
-          onClick={() => showBanner()}
-          title={t('add_subscription_url')}
-          className={`bg-primary-7 hover:bg-accent-7 group-[:not(:hover)]:bg-primary-8 flex aspect-square h-10 items-center justify-center rounded-md`}
+        <span
+          aria-hidden="true"
+          className="bg-primary-8 group-hover:bg-accent-7 flex h-10 w-10 shrink-0 items-center justify-center rounded-md"
         >
           <span className="-mt-2 text-3xl">+</span>
-        </button>
+        </span>
 
-        {!mini && <p className={`h-10 w-full cursor-default text-sm`}>{t('add_subscription_url')}</p>}
-      </div>
+        {!mini && <span className="min-w-0 text-sm">{t('add_subscription_url')}</span>}
+      </button>
     </>
   )
 }
